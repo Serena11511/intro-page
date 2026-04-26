@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人介绍 - 自我介绍页面</title>
+    <title>John Doe — Full-Stack Developer</title>
     <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface2: #1a1a2e;
+            --border: #1e1e3a;
+            --cyan: #00f0ff;
+            --purple: #b44dff;
+            --text: #c8c8d4;
+            --text-dim: #6a6a7a;
+            --green: #00ff88;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,91 +24,233 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 24px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Scan line overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.03) 2px,
+                rgba(0,0,0,0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 99;
         }
 
         .card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
+            position: relative;
+            z-index: 1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 640px;
             width: 100%;
             overflow: hidden;
+            box-shadow:
+                0 0 60px rgba(0,240,255,0.08),
+                0 0 120px rgba(180,77,255,0.05),
+                inset 0 1px 0 rgba(255,255,255,0.02);
+        }
+
+        /* Top accent bar */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--cyan), var(--purple), var(--cyan));
+            background-size: 200% 100%;
+            animation: scan 3s linear infinite;
+            z-index: 2;
+        }
+
+        @keyframes scan {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px 30px;
+            padding: 48px 32px 36px;
             text-align: center;
-            color: white;
+            position: relative;
+            background: radial-gradient(ellipse at center, rgba(0,240,255,0.06) 0%, transparent 70%);
+        }
+
+        /* Hexagon avatar */
+        .avatar-wrap {
+            position: relative;
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 20px;
         }
 
         .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: white;
+            width: 96px;
+            height: 96px;
+            background: var(--surface2);
+            border: 2px solid var(--cyan);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0 auto 15px;
-            font-size: 48px;
-            color: #667eea;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            box-shadow:
+                0 0 20px rgba(0,240,255,0.3),
+                inset 0 0 20px rgba(0,240,255,0.05);
+            transition: box-shadow 0.4s;
+        }
+
+        .avatar:hover {
+            box-shadow:
+                0 0 40px rgba(0,240,255,0.5),
+                0 0 80px rgba(180,77,255,0.2),
+                inset 0 0 30px rgba(0,240,255,0.1);
+        }
+
+        .avatar-icon {
+            font-size: 40px;
+            color: var(--cyan);
+            line-height: 1;
+        }
+
+        /* Orbiting dots */
+        .orbit {
+            position: absolute;
+            inset: -12px;
+            border: 1px dashed rgba(0,240,255,0.2);
+            border-radius: 50%;
+            animation: spin 8s linear infinite;
+        }
+
+        .orbit::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: var(--cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--cyan);
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
         }
 
         .name {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 700;
-            margin-bottom: 5px;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0,240,255,0.4);
         }
 
         .title {
-            font-size: 16px;
-            opacity: 0.9;
-            font-weight: 300;
+            font-size: 14px;
+            color: var(--purple);
+            margin-top: 6px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 16px;
+            background: var(--cyan);
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
         }
 
         .content {
-            padding: 30px;
+            padding: 0 32px 32px;
         }
 
         .section {
-            margin-bottom: 25px;
+            margin-bottom: 28px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 24px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .section:last-child {
-            margin-bottom: 0;
+        .section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,240,255,0.02));
+            pointer-events: none;
         }
 
         .section-title {
-            font-size: 18px;
+            font-size: 12px;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 12px;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 2px;
+        .section-title .icon {
+            font-size: 16px;
+        }
+
+        .section-title .bracket {
+            color: var(--text-dim);
         }
 
         .about-text {
-            color: #666;
+            color: var(--text-dim);
             line-height: 1.8;
-            font-size: 15px;
+            font-size: 14px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .about-text .highlight {
+            color: var(--cyan);
         }
 
         .skill-tags {
@@ -106,12 +260,22 @@
         }
 
         .skill-tag {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
             padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
+            border-radius: 4px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .skill-tag:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            box-shadow: 0 0 12px rgba(0,240,255,0.15),
+                        inset 0 0 12px rgba(0,240,255,0.05);
         }
 
         .info-list {
@@ -121,40 +285,67 @@
         .info-list li {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             padding: 10px 0;
-            border-bottom: 1px solid #f0f0f0;
-            color: #555;
-            font-size: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            color: var(--text-dim);
+            font-size: 14px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         .info-list li:last-child {
             border-bottom: none;
         }
 
-        .info-icon {
-            font-size: 20px;
-            width: 30px;
-            text-align: center;
+        .info-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
         }
+
+        .dot-cyan { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+        .dot-purple { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
+        .dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
 
         .footer {
             text-align: center;
-            padding: 20px;
-            color: #999;
-            font-size: 13px;
-            border-top: 1px solid #f0f0f0;
+            padding: 20px 32px 28px;
+            color: var(--text-dim);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer .version {
+            color: var(--cyan);
         }
 
         @media (max-width: 480px) {
             .header {
-                padding: 30px 20px;
+                padding: 36px 20px 28px;
             }
             .name {
                 font-size: 24px;
             }
             .content {
-                padding: 20px;
+                padding: 0 16px 24px;
+            }
+            .section {
+                padding: 16px 18px;
+            }
+            .avatar-wrap {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 16px;
+            }
+            .avatar {
+                width: 80px;
+                height: 80px;
+            }
+            .avatar-icon {
+                font-size: 32px;
             }
         }
     </style>
@@ -162,60 +353,82 @@
 <body>
     <div class="card">
         <div class="header">
-            <div class="avatar">👤</div>
-            <div class="name">张三</div>
-            <div class="title">全栈开发工程师 / 技术爱好者</div>
+            <div class="avatar-wrap">
+                <div class="avatar">
+                    <span class="avatar-icon">&lt;/&gt;</span>
+                </div>
+            </div>
+            <div class="name">John Doe<span class="cursor"></span></div>
+            <div class="title">Full-Stack Developer</div>
         </div>
 
         <div class="content">
             <div class="section">
-                <div class="section-title">关于我</div>
+                <div class="section-title">
+                    <span class="bracket">[</span>
+                    <span class="icon">◈</span>
+                    About
+                    <span class="bracket">]</span>
+                </div>
                 <p class="about-text">
-                    你好！我是一名热爱技术的全栈开发工程师，拥有 5 年以上的开发经验。
-                    我热衷于构建优雅、高性能的 Web 应用程序，喜欢探索新技术并将其应用到实际项目中。
-                    在工作之余，我喜欢写博客分享技术心得，也活跃于开源社区。
+                    <span class="highlight">&gt;</span> Hello, World! I'm a passionate full-stack developer with <span class="highlight">5+ years</span> of experience crafting elegant, high-performance web applications. I thrive at the intersection of <span class="highlight">design</span> and <span class="highlight">engineering</span>, constantly exploring emerging technologies and contributing to open-source.<br><br>
+                    <span class="highlight">&gt;</span> When I'm not writing clean code, you'll find me blogging about tech, tinkering with home automation, or exploring the latest in <span class="highlight">AI</span> and <span class="highlight">cloud-native</span> architectures.
                 </p>
             </div>
 
             <div class="section">
-                <div class="section-title">技能特长</div>
+                <div class="section-title">
+                    <span class="bracket">[</span>
+                    <span class="icon">⚙</span>
+                    Tech Stack
+                    <span class="bracket">]</span>
+                </div>
                 <div class="skill-tags">
                     <span class="skill-tag">JavaScript</span>
                     <span class="skill-tag">TypeScript</span>
                     <span class="skill-tag">React</span>
-                    <span class="skill-tag">Vue.js</span>
+                    <span class="skill-tag">Next.js</span>
                     <span class="skill-tag">Node.js</span>
                     <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Rust</span>
                     <span class="skill-tag">Docker</span>
-                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">Kubernetes</span>
+                    <span class="skill-tag">AWS</span>
+                    <span class="skill-tag">GraphQL</span>
+                    <span class="skill-tag">PostgreSQL</span>
                 </div>
             </div>
 
             <div class="section">
-                <div class="section-title">联系方式</div>
+                <div class="section-title">
+                    <span class="bracket">[</span>
+                    <span class="icon">☎</span>
+                    Contact
+                    <span class="bracket">]</span>
+                </div>
                 <ul class="info-list">
                     <li>
-                        <span class="info-icon">📧</span>
-                        <span>zhangsan@example.com</span>
+                        <span class="info-dot dot-cyan"></span>
+                        <span>john.doe@devbox.io</span>
                     </li>
                     <li>
-                        <span class="info-icon">📱</span>
-                        <span>138-0000-0000</span>
+                        <span class="info-dot dot-purple"></span>
+                        <span>github.com/johndoe</span>
                     </li>
                     <li>
-                        <span class="info-icon">🌐</span>
-                        <span>https://zhangsan.dev</span>
+                        <span class="info-dot dot-green"></span>
+                        <span>linkedin.com/in/johndoe</span>
                     </li>
                     <li>
-                        <span class="info-icon">📍</span>
-                        <span>中国 · 北京</span>
+                        <span class="info-dot dot-cyan"></span>
+                        <span>San Francisco, CA</span>
                     </li>
                 </ul>
             </div>
         </div>
 
         <div class="footer">
-            © 2026 个人介绍页面 | Powered by Qoder
+            <span class="version">v2.0</span> &nbsp;|&nbsp; Built with Qoder &nbsp;|&nbsp; SYS.ONLINE
         </div>
     </div>
 </body>
